@@ -1,0 +1,44 @@
+import React from 'react';
+import styled from 'styled-components';
+import { Location } from '../domain';
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`
+
+const NoStarredMessage = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+`
+
+const Star = styled.span`
+  color: #f4511e;
+`
+
+export interface StarredProps {
+  locations: Location[]
+}
+
+const Starred = ({ locations }: StarredProps) => {
+  return (
+    <Content>
+      {locations.length == 0 ?
+        (
+          <NoStarredMessage>
+            <span>No <Star>★</Star> trips yet.</span>
+          </NoStarredMessage>
+        ) :
+        (
+          <span>Starred Locations</span>
+        )}
+
+    </Content>
+  )
+}
+
+export default Starred;
