@@ -4,8 +4,8 @@
   "license": "MIT",
   "private": "true",
   "scripts": {
-    "start": "webpack-dev-server --open",
-    "build": "webpack"
+    "start": "webpack-dev-server --open --config webpack.dev.ts",
+    "build": "webpack --config webpack.prod.ts"
   },
   "dependencies": {
     "@types/luxon": "^1.24.1",
@@ -41,6 +41,7 @@
     "typescript": "^3.9.6",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^5.0.9"
   }
 }
