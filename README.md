@@ -10,6 +10,8 @@ The official SL (Stockholms Lokaltrafik) Android app is not great so decided to 
 - [ ] Show legs of the trip
 - [ ] Detailed view of a trip
 - [ ] Show countdown for each suggested trip until they leave
+- [ ] Select time
+- [ ] Save `from` and `to` in query parameters with `URLSearchParams` and `History API`.
 
 #### Bugs
 - [ ] Seleting an address as a location breaks the trip planning API

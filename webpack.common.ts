@@ -34,11 +34,12 @@ const config: webpack.Configuration = {
     new CleanWebpackPlugin(),
     new CopyPlugin({
       patterns: [
+        { from: 'src/icons/', to: 'icons' },
         'src/manifest.webmanifest'
       ]
     }),
     new HtmlWebpackPlugin({
-      title: 'SL',
+      title: 'Stockholms Lokaltrafik',
       template: 'src/index.html'
     })
   ],

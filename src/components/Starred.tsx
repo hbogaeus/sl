@@ -17,7 +17,7 @@ const NoStarredMessage = styled.div`
 `
 
 const Star = styled.span`
-  color: #f4511e;
+  color: #019cd5;
 `
 
 export interface StarredProps {
