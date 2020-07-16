@@ -1,7 +1,7 @@
 import React from "react";
 import AsyncSelect from 'react-select/async';
 import debounce from "debounce-promise";
-import { Location } from "../domain";
+import { Station, Location } from "../domain";
 import { getLocations } from "../lib/api";
 
 const loadOptions = async (inputValue: string): Promise<{ label: string, value: Location }[]> => {
@@ -15,11 +15,11 @@ const loadOptions = async (inputValue: string): Promise<{ label: string, value: 
 const debouncedLoadOptions = debounce(loadOptions, 500);
 
 type Option = {
-  value: Location
+  value: Station
 }
 
 export interface LocationSelectProps {
-  onChange: (location: Location) => void,
+  onChange: (location: Station) => void,
   label: string,
   className?: string
 }

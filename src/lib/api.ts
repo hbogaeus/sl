@@ -1,4 +1,4 @@
-import { Location, Trip } from "../domain";
+import { Trip, Location, LocationKind } from "../domain";
 
 const baseUrl = '/api';
 
@@ -11,15 +11,37 @@ const http = async <T>(request: RequestInfo): Promise<T> => {
 interface LocationsResponse {
   ResponseData: {
     Name: string,
-    SiteId: string
+    Type: LocationKind,
+    SiteId: string,
+    X: string,
+    Y: string
   }[]
 }
+
+const formatCoordinates = (x: string, y: string): { long: string, lat: string } => ({
+  long: x.substring(0, 2) + "." + x.substring(2),
+  lat: y.substring(0, 2) + "." + y.substring(2),
+})
 
 export const getLocations = async (input: string): Promise<Location[]> => {
   const url = `${baseUrl}/typeahead.json?searchstring=${encodeURIComponent(input)}&stationsonly=false&maxresults=5`
   const response = await http<LocationsResponse>(url);
 
-  return response.ResponseData.map(({ Name, SiteId }) => ({ name: Name, id: SiteId }))
+  return response.ResponseData.map(location => {
+    if (location.Type == LocationKind.Station) {
+      return {
+        kind: LocationKind.Station,
+        name: location.Name,
+        id: location.SiteId
+      }
+    } else if (location.Type == LocationKind.Address) {
+      return {
+        kind: LocationKind.Address,
+        name: location.Name,
+        coords: formatCoordinates(location.X, location.Y)
+      }
+    }
+  })
 }
 
 interface TripPlanResponse {
@@ -51,8 +73,26 @@ const mapResponseToDomain = (response: TripPlanResponse): Trip[] => {
   }))
 }
 
-export const getTripPlan = async (originId: string, destId: string): Promise<Trip[]> => {
-  const url = `${baseUrl}/TravelplannerV3_1/trip.json?originId=${originId}&destId=${destId}`
+// TODO: Rewrite in a functional style
+const appendParameters = (location: Location, params: URLSearchParams, paramPrefix: 'origin' | 'dest'): void => {
+  if (location.kind == LocationKind.Station) {
+    params.append(`${paramPrefix}Id`, location.id);
+  } else if (location.kind == LocationKind.Address) {
+    params.append(`${paramPrefix}CoordLat`, location.coords.lat);
+    params.append(`${paramPrefix}CoordLong`, location.coords.long);
+  } else {
+    console.warn('Unhandled location kind', location);
+  }
+}
+
+export const getTripPlan = async (origin: Location, destination: Location): Promise<Trip[]> => {
+  let apiUrl = `${baseUrl}/TravelplannerV3_1/trip.json`;
+  let params = new URLSearchParams();
+
+  appendParameters(origin, params, 'origin');
+  appendParameters(destination, params, 'dest');
+
+  const url = `${apiUrl}?${params.toString()}`
   console.log(url);
   const response = await http<TripPlanResponse>(url);
 

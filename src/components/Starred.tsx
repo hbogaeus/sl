@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Location } from '../domain';
+import { Station } from '../domain';
 
 const Content = styled.div`
   display: flex;
@@ -21,7 +21,7 @@ const Star = styled.span`
 `
 
 export interface StarredProps {
-  locations: Location[]
+  locations: Station[]
 }
 
 const Starred = ({ locations }: StarredProps) => {

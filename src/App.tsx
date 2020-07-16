@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useLocalStorage } from 'react-use';
 import Header from './components/Header';
 import SelectorArea from './components/SelectorArea';
-import { Location, Trip } from './domain';
+import { Station, Trip, Location } from './domain';
 import { getTripPlan } from './lib/api';
 import Trips from './components/Trips';
 import Starred from './components/Starred';
@@ -23,15 +23,12 @@ const App = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const fetchedTrips = await getTripPlan(origin.id, destination.id);
+      const fetchedTrips = await getTripPlan(origin, destination);
       setTrips(fetchedTrips);
     }
 
     if (origin && destination) {
-      console.log("Getting data", origin.id, origin.id);
       fetchData();
-    } else {
-      console.log("Not fetching data");
     }
   }, [origin, destination])
 

@@ -3,7 +3,7 @@ The official SL (Stockholms Lokaltrafik) Android app is not great so decided to 
 
 #### Things to do
 - [ ] CI/CD with Github Actions
-- [ ] Fix web manifest to make the app able to be installed
+- [x] Fix web manifest to make the app able to be installed
 
 #### Features
 - [ ] Star trips
@@ -14,4 +14,4 @@ The official SL (Stockholms Lokaltrafik) Android app is not great so decided to 
 - [ ] Save `from` and `to` in query parameters with `URLSearchParams` and `History API`.
 
 #### Bugs
-- [ ] Seleting an address as a location breaks the trip planning API
+- [x] Seleting an address as a location breaks the trip planning API

@@ -32,10 +32,6 @@ const TripDuration = styled.div`
 
 `
 
-export interface TripProps {
-  trip: Trip
-}
-
 const formatDuration = (duration: string): string => {
   const { hours, minutes } = Duration.fromISO(duration).toObject();
   let formattedDuration = '';
@@ -52,6 +48,10 @@ const formatDuration = (duration: string): string => {
 
 const formatTime = (time: string): string => {
   return DateTime.fromISO(time).toLocaleString(DateTime.TIME_24_SIMPLE);
+}
+
+export interface TripProps {
+  trip: Trip
 }
 
 const Trip = ({ trip }: TripProps) => {
