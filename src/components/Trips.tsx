@@ -7,7 +7,7 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 8px 16px;
+  padding: 0.6rem 1.2rem;
 `
 
 const Labels = styled.div`

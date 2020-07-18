@@ -20,6 +20,12 @@ export interface Address {
   }
 }
 
+export interface SavedTrip {
+  from: Location,
+  to: Location
+}
+
+// TODO: Find a better name for this
 export interface Trip {
   startTime: string,
   endTime: string,

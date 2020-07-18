@@ -1,10 +1,8 @@
 import * as path from 'path';
 import * as webpack from 'webpack';
-import HtmlWebpackPlugin from "html-webpack-plugin";
-import { CleanWebpackPlugin } from "clean-webpack-plugin";
-import CopyPlugin from "copy-webpack-plugin";
-
-const baseSlUrl = "https://api.sl.se/api2"
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
 
 const config: webpack.Configuration = {
   entry: './src/index.tsx',
