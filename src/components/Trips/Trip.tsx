@@ -18,27 +18,13 @@ const TripInfo = styled.div`
   align-items: center;
   justify-content: space-between;
   font-variant-numeric: tabular-nums;
+  transition: opacity 500ms;
+  opacity: ${(p: { hasPassed: boolean }) => p.hasPassed ? 0.5 : 1.0};
 `
 
 const Spacer = styled.div`
   flex-grow: 1;
 `
-
-const formatDuration = (duration: Duration): string => {
-  return duration.toFormat('hh:mm');
-}
-
-const formatTime = (time: DateTime): string => {
-  return time.toLocaleString(DateTime.TIME_24_SIMPLE);
-}
-
-const calculateLeavesIn = (startTime: DateTime, now: DateTime): string => {
-  if (startTime >= now) {
-    return startTime.diff(now).toFormat('hh:mm');
-  } else {
-    return '-'
-  }
-}
 
 export interface TripProps {
   trip: Trip,
@@ -46,15 +32,20 @@ export interface TripProps {
 }
 
 const Trip = ({ trip, now }: TripProps) => {
-  const duration = formatDuration(trip.duration);
-  const leavesIn = calculateLeavesIn(trip.startTime, now);
+  const hasPassed = trip.startTime <= now;
+  let leavesIn;
+  if (hasPassed) {
+    leavesIn = '-';
+  } else {
+    leavesIn = trip.startTime.diff(now).toFormat('hh:mm');
+  }
 
   return (
     <Content>
-      <TripInfo>
-        <span>{formatTime(trip.startTime)}</span>
-        <LineWithDuration duration={duration} />
-        <span>{formatTime(trip.endTime)}</span>
+      <TripInfo hasPassed={hasPassed}>
+        <span>{trip.startTime.toLocaleString(DateTime.TIME_24_SIMPLE)}</span>
+        <LineWithDuration duration={trip.duration.toFormat('hh:mm')} />
+        <span>{trip.endTime.toLocaleString(DateTime.TIME_24_SIMPLE)}</span>
         <Spacer />
         <span>{leavesIn}</span>
       </TripInfo>
