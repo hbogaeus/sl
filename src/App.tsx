@@ -7,8 +7,11 @@ import Trips from './components/Trips/Trips';
 import SavedTrips from './components/SavedTrips/SavedTrips';
 import { useSavedTrips } from './lib/useSavedTrips';
 import LocationSelect from './components/LocationSelect';
-import Button from './components/Button';
+import { FilledButton, OutlinedButton } from './components/Buttons';
 import Icon from './components/Icon';
+import { DateTime, Duration } from 'luxon';
+import Spacer from './components/Spacer';
+import CrossIcon from './components/CrossIcon';
 
 const Content = styled.div`
   display: flex;
@@ -52,12 +55,18 @@ const PaddedLocationSelect = styled(LocationSelect)`
   padding: 4px 0;
 `
 
+const Divider = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  border-bottom: solid 1px #019cd5;
+  padding-bottom: 0.6rem;
+  margin: 0.6rem 1.2rem 0 1.2rem;
+`
+
 const Label = styled.span`
   font-size: 0.8rem;
   text-transform: uppercase;
-  margin: 0.6rem 1.2rem 0 1.2rem;
-  border-bottom: solid 1px #019cd5;
-  padding-bottom: 0.6rem;
 `
 
 const App = () => {
@@ -92,7 +101,6 @@ const App = () => {
     setTo(from);
   }
 
-  /*
   useEffect(() => {
     const testTrips: Trip[] = [
       {
@@ -111,7 +119,7 @@ const App = () => {
         duration: Duration.fromISO("PT24M"),
       },
       {
-        startTime: DateTime.fromISO("17:58:00"),
+        startTime: DateTime.fromISO("23:10:00"),
         endTime: DateTime.fromISO("18:18:00"),
         duration: Duration.fromISO("PT24M"),
       }
@@ -119,13 +127,14 @@ const App = () => {
     setTrips(testTrips);
     setShowTrips(true);
   }, []);
-  */
 
   return (
     <Content>
       <Header />
       <Wrapper>
-        <Label>New Trip</Label>
+        <Divider>
+          <Label>New Trip</Label>
+        </Divider>
         <Controls>
           <TripSelect>
             <PaddedLocationSelect
@@ -138,25 +147,32 @@ const App = () => {
               onChange={setTo} />
           </TripSelect>
           <SwapButtonWrapper>
-            <Button
+            <FilledButton
               disabled={from == undefined && to == undefined}
               onClick={() => swapSelectedLocations()}
             >
               <Icon>↕</Icon>
-            </Button>
+            </FilledButton>
           </SwapButtonWrapper>
         </Controls>
         {showTrips ?
           <>
-            <Label>Trip Results</Label>
-            <Button onClick={() => setShowTrips(false)}>Close</Button>
+            <Divider>
+              <Label>Trip Results</Label>
+              <Spacer />
+              <OutlinedButton onClick={() => setShowTrips(false)}>
+                <CrossIcon />
+              </OutlinedButton>
+            </Divider>
             <Trips
               loading={loading}
               trips={trips} />
           </>
           :
           <>
-            <Label>Saved Trips</Label>
+            <Divider>
+              <Label>Saved Trips</Label>
+            </Divider>
             <SavedTrips
               setTrip={setTrip}
               savedTrips={savedTrips} />

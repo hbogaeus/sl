@@ -3,16 +3,16 @@ import styled from 'styled-components';
 
 const Content = styled.span`
   display: flex;
-  padding: 0.4rem;
+  padding: 0;
   width: 1.5rem;
   height: 1.5rem;
   justify-content: center;
   align-items: center;
-  font-size: 1rem;
+  font-size: 1.5rem;
 `
 
-const Icon: React.FC = ({ children }) => (
-  <Content>{children}</Content>
+const CrossIcon = () => (
+  <Content>×</Content>
 )
 
-export default Icon;
+export default CrossIcon;

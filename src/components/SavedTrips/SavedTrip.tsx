@@ -20,7 +20,7 @@ export interface SavedTripProps {
   setTrip: (from: Location, to: Location) => void
 }
 
-const Star = ({ savedTrip: { from, to }, setTrip }: SavedTripProps) => {
+const SavedTrip = ({ savedTrip: { from, to }, setTrip }: SavedTripProps) => {
   return (
     <Content onClick={() => setTrip(from, to)}>
       <span>{from.name}</span>
@@ -29,4 +29,4 @@ const Star = ({ savedTrip: { from, to }, setTrip }: SavedTripProps) => {
   )
 }
 
-export default Star;
+export default SavedTrip;

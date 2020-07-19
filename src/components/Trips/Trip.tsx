@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Trip } from '../../domain';
-import { Duration, DateTime, Interval } from 'luxon';
+import { DateTime } from 'luxon';
 import LineWithDuration from './LineWithDuration';
+import Spacer from '../Spacer';
 
 const Content = styled.div`
   display: flex;
@@ -19,12 +20,14 @@ const TripInfo = styled.div`
   justify-content: space-between;
   font-variant-numeric: tabular-nums;
   transition: opacity 500ms;
+  background-color: #ffffff;
+  border-radius: 2px;
+  padding: 0.4rem 0.8rem;
+  border: solid 1px rgb(227,227,227);
+  box-shadow: 0 1px 2px rgba(0,0,0,.025);
   opacity: ${(p: { hasPassed: boolean }) => p.hasPassed ? 0.5 : 1.0};
 `
 
-const Spacer = styled.div`
-  flex-grow: 1;
-`
 
 export interface TripProps {
   trip: Trip,
