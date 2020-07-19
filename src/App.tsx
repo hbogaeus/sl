@@ -12,6 +12,7 @@ import Icon from './components/Icon';
 import { DateTime, Duration } from 'luxon';
 import Spacer from './components/Spacer';
 import CrossIcon from './components/CrossIcon';
+import StarIcon from './components/StarIcon';
 
 const Content = styled.div`
   display: flex;
@@ -101,6 +102,7 @@ const App = () => {
     setTo(from);
   }
 
+  /*
   useEffect(() => {
     const testTrips: Trip[] = [
       {
@@ -127,6 +129,7 @@ const App = () => {
     setTrips(testTrips);
     setShowTrips(true);
   }, []);
+  */
 
   return (
     <Content>
@@ -159,6 +162,9 @@ const App = () => {
           <>
             <Divider>
               <Label>Trip Results</Label>
+              <OutlinedButton>
+                <StarIcon filled={true} />
+              </OutlinedButton>
               <Spacer />
               <OutlinedButton onClick={() => setShowTrips(false)}>
                 <CrossIcon />
@@ -179,7 +185,7 @@ const App = () => {
           </>
         }
       </Wrapper>
-    </Content>
+    </Content >
   )
 }
 

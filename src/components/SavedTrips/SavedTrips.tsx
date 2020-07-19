@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Star from '../Star';
+import Star from '../StarIcon';
 import { SavedTrip, Location } from '../../domain';
 import SavedTripComponent from './SavedTrip';
 

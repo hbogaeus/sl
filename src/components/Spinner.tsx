@@ -1,6 +1,6 @@
 import styled, { keyframes } from 'styled-components';
-const rotate360 = keyframes`
-  from {
+const donutSpin = keyframes`
+  0% {
     transform: rotate(0deg);
   }
   100% {
@@ -9,17 +9,20 @@ const rotate360 = keyframes`
 `;
 
 const Spinner = styled.div`
-  animation: ${rotate360} 1s linear infinite;
-  transform: translateZ(0);
-  
-  border-top: 2px solid grey;
-  border-right: 2px solid grey;
-  border-bottom: 2px solid grey;
-  border-left: 4px solid black;
-  background: transparent;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: -0.75rem;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #019cd5;
+    border-radius: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+
+    animation: ${donutSpin} 1s linear infinite;
+  }
 `;
 
 export default Spinner;

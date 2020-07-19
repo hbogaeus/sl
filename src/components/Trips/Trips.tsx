@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import TripComponent from './Trip';
 import { Trip } from '../../domain';
 import { DateTime } from 'luxon';
+import Spinner from '../Spinner';
 
 const Content = styled.div`
   display: flex;
@@ -11,13 +12,9 @@ const Content = styled.div`
   padding: 0.6rem 1.2rem;
 `
 
-const Labels = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+const SpinnerContainer = styled(Content)`
   align-items: center;
-  color: #939393;
-  font-size: 0.8rem;
+  justify-content: center;
 `
 
 export interface TripsProps {
@@ -37,9 +34,9 @@ const Trips = ({ trips, loading }: TripsProps) => {
 
   if (loading) {
     return (
-      <Content>
-        <span>Loading!</span>
-      </Content>
+      <SpinnerContainer>
+        <Spinner />
+      </SpinnerContainer>
     )
   }
 
