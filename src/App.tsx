@@ -15,6 +15,13 @@ const Content = styled.div`
   height: 100%;
 `
 
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: hidden;
+`
+
 const TripSelect = styled.div`
   display: flex;
   flex-direction: column;
@@ -73,6 +80,7 @@ const App = () => {
     }
   }, [from, to])
 
+  /*
   useEffect(() => {
     const testTrips: Trip[] = [
       {
@@ -99,36 +107,40 @@ const App = () => {
     setTrips(testTrips);
     setShowTrips(true);
   }, []);
+  */
 
   return (
     <Content>
-      <Label>New Trip</Label>
-      <TripSelect>
-        <PaddedLocationSelect
-          label="From..."
-          value={from}
-          onChange={setFrom} />
-        <PaddedLocationSelect
-          label="To..."
-          value={to}
-          onChange={setTo} />
-      </TripSelect>
-      {showTrips ?
-        <>
-          <Label>Trips</Label>
-          <button onClick={() => setShowTrips(false)}>Close</button>
-          <Trips
-            loading={loading}
-            trips={trips} />
-        </>
-        :
-        <>
-          <Label>Saved Trips</Label>
-          <SavedTrips
-            setTrip={setTrip}
-            savedTrips={savedTrips} />
-        </>
-      }
+      <Header />
+      <Wrapper>
+        <Label>New Trip</Label>
+        <TripSelect>
+          <PaddedLocationSelect
+            label="From..."
+            value={from}
+            onChange={setFrom} />
+          <PaddedLocationSelect
+            label="To..."
+            value={to}
+            onChange={setTo} />
+        </TripSelect>
+        {showTrips ?
+          <>
+            <Label>Trips</Label>
+            <button onClick={() => setShowTrips(false)}>Close</button>
+            <Trips
+              loading={loading}
+              trips={trips} />
+          </>
+          :
+          <>
+            <Label>Saved Trips</Label>
+            <SavedTrips
+              setTrip={setTrip}
+              savedTrips={savedTrips} />
+          </>
+        }
+      </Wrapper>
     </Content>
   )
 }
