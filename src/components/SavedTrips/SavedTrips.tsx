@@ -20,10 +20,11 @@ const SavedTripsWrapper = styled.div`
 
 const NoSavedTrips = styled.div`
   display: flex;
-  flex-direction: column;
-  padding-top: 2rem;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
-  flex-grow: 1;
+  padding-top: 1rem;
+  margin: 0.6rem 1.2rem 0 1.2rem;
 `
 
 export interface SavedTripsProps {
@@ -34,11 +35,9 @@ export interface SavedTripsProps {
 const SavedTrips = ({ savedTrips, setTrip }: SavedTripsProps) => {
   if (savedTrips.length == 0)
     return (
-      <Content>
-        <NoSavedTrips>
-          <span>No <Star filled={true} /> trips yet.</span>
-        </NoSavedTrips>
-      </Content>
+      <NoSavedTrips>
+        No <Star filled={true} /> trips yet.
+      </NoSavedTrips>
     )
 
   return (
