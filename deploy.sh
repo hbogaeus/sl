@@ -1,3 +1,3 @@
 #!/bin/sh -x
 yarn build
-rsync -avzh dist/ bogaeus:/home/henry/sl
+rsync -avzh --delete dist/ bogaeus:/home/henry/sl
