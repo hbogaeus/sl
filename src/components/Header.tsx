@@ -5,7 +5,7 @@ const Content = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 56px;
+  height: 48px;
   border-bottom: solid 1px rgb(227, 227, 227);
   /* background-color: #ffffff; */
   background-color: #019cd5;

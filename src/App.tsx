@@ -3,10 +3,11 @@ import styled from 'styled-components';
 import Header from './components/Header';
 import { Trip, Location } from './domain';
 import { getTripPlan } from './lib/api';
-import Trips from './components/Trips';
+import Trips from './components/Trips/Trips';
 import SavedTrips from './components/SavedTrips/SavedTrips';
 import { useSavedTrips } from './lib/useSavedTrips';
 import LocationSelect from './components/LocationSelect';
+import { DateTime, Duration } from 'luxon';
 
 const Content = styled.div`
   display: flex;
@@ -17,7 +18,7 @@ const Content = styled.div`
 const TripSelect = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 0.6rem 1.2rem;
+  padding: 0.6rem 1.2rem 0 1.2rem;
 `
 
 const PaddedLocationSelect = styled(LocationSelect)`
@@ -29,7 +30,7 @@ const Label = styled.span`
   text-transform: uppercase;
   margin: 0.6rem 1.2rem 0 1.2rem;
   border-bottom: solid 1px #019cd5;
-  padding-bottom: 6px;
+  padding-bottom: 0.6rem;
 `
 
 const SaveTripButton = styled.button`
@@ -49,6 +50,7 @@ const App = () => {
   const [from, setFrom] = useState<Location>();
   const [to, setTo] = useState<Location>();
   const [trips, setTrips] = useState<Trip[]>();
+  const [loading, setLoading] = useState<boolean>(false);
   const [showTrips, setShowTrips] = useState<boolean>(false);
   const [savedTrips, saveTrip] = useSavedTrips();
 
@@ -59,43 +61,48 @@ const App = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const fetchedTrips = await getTripPlan(from, to);
       setTrips(fetchedTrips);
+      setLoading(false);
     }
 
     if (from && to) {
+      setShowTrips(true);
       fetchData();
     }
   }, [from, to])
 
   useEffect(() => {
-    if (trips) {
-      setShowTrips(true);
-    }
-  }, [trips]);
-
-  /*
-  useEffect(() => {
     const testTrips: Trip[] = [
       {
-        startTime: "17:47:00",
-        endTime: "18:10:00",
-        duration: "PT23M",
+        startTime: DateTime.fromISO("08:47:00"),
+        endTime: DateTime.fromISO("10:10:00"),
+        duration: Duration.fromISO("PT23M"),
       },
       {
-        startTime: "17:49:00",
-        endTime: "18:18:00",
-        duration: "PT24M",
+        startTime: DateTime.fromISO("17:49:00"),
+        endTime: DateTime.fromISO("18:18:00"),
+        duration: Duration.fromISO("PT24M"),
+      },
+      {
+        startTime: DateTime.fromISO("17:54:00"),
+        endTime: DateTime.fromISO("18:18:00"),
+        duration: Duration.fromISO("PT24M"),
+      },
+      {
+        startTime: DateTime.fromISO("17:58:00"),
+        endTime: DateTime.fromISO("18:18:00"),
+        duration: Duration.fromISO("PT24M"),
       }
     ];
     setTrips(testTrips);
+    setShowTrips(true);
   }, []);
-  */
 
   return (
     <Content>
-      <Header />
-      {/* <Label>New Trip</Label> */}
+      <Label>New Trip</Label>
       <TripSelect>
         <PaddedLocationSelect
           label="From..."
@@ -106,8 +113,22 @@ const App = () => {
           value={to}
           onChange={setTo} />
       </TripSelect>
-      {/* <Label>Saved Trip</Label> */}
-      {showTrips ? <Trips trips={trips} /> : <SavedTrips setTrip={setTrip} savedTrips={savedTrips} />}
+      {showTrips ?
+        <>
+          <Label>Trips</Label>
+          <button onClick={() => setShowTrips(false)}>Close</button>
+          <Trips
+            loading={loading}
+            trips={trips} />
+        </>
+        :
+        <>
+          <Label>Saved Trips</Label>
+          <SavedTrips
+            setTrip={setTrip}
+            savedTrips={savedTrips} />
+        </>
+      }
     </Content>
   )
 }

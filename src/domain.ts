@@ -1,3 +1,5 @@
+import { DateTime, Duration } from "luxon";
+
 export type Location = Station | Address;
 
 export enum LocationKind {
@@ -27,7 +29,7 @@ export interface SavedTrip {
 
 // TODO: Find a better name for this
 export interface Trip {
-  startTime: string,
-  endTime: string,
-  duration: string // in ISO-8601 format
+  startTime: DateTime,
+  endTime: DateTime,
+  duration: Duration
 }

@@ -1,4 +1,5 @@
 import { Trip, Location, LocationKind } from "../domain";
+import { DateTime, Duration } from "luxon";
 
 const baseUrl = '/api';
 
@@ -61,16 +62,20 @@ interface TripPlanResponse {
         },
       }[]
     },
-    duration: string
+    duration: string // in ISO-8601 format
   }[]
 }
 
 const mapResponseToDomain = (response: TripPlanResponse): Trip[] => {
-  return response.Trip.map((trip) => ({
-    startTime: trip.LegList.Leg[0].Origin.time,
-    endTime: trip.LegList.Leg[0].Destination.time,
-    duration: trip.duration
-  }))
+  return response.Trip.map(trip => {
+    const startTime = DateTime.fromISO(trip.LegList.Leg[0].Origin.time);
+    const endTime = DateTime.fromISO(trip.LegList.Leg[0].Destination.time);
+    return {
+      startTime: startTime,
+      endTime: endTime,
+      duration: Duration.fromISO(trip.duration)
+    }
+  });
 }
 
 // TODO: Rewrite in a functional style

@@ -8,6 +8,7 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
+  overflow-y: auto;
 `
 
 const SavedTripsWrapper = styled.div`
