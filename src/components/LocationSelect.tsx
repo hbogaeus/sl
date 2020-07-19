@@ -5,8 +5,6 @@ import { Location } from "../domain";
 import { getLocations } from "../lib/api";
 
 const loadOptions = async (inputValue: string): Promise<{ label: string, value: Location }[]> => {
-  console.log(`Getting options for"${inputValue}"`);
-
   const locations = await getLocations(inputValue);
 
   return locations.map(location => ({ value: location, label: location.name }))

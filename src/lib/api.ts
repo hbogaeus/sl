@@ -98,7 +98,6 @@ export const getTripPlan = async (origin: Location, destination: Location): Prom
   appendParameters(destination, params, 'dest');
 
   const url = `${apiUrl}?${params.toString()}`
-  console.log(url);
   const response = await http<TripPlanResponse>(url);
 
   return mapResponseToDomain(response);

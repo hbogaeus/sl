@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const LineWrapper = styled.span`
   display: flex;
   color: #4c555a;
-  width: 100px;
+  width: 8rem;
   flex-direction: row;
   font-size: 0.8rem;
   text-transform: uppercase;

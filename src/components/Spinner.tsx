@@ -3,7 +3,7 @@ const rotate360 = keyframes`
   from {
     transform: rotate(0deg);
   }
-  to {
+  100% {
     transform: rotate(360deg);
   }
 `;

@@ -7,7 +7,8 @@ import Trips from './components/Trips/Trips';
 import SavedTrips from './components/SavedTrips/SavedTrips';
 import { useSavedTrips } from './lib/useSavedTrips';
 import LocationSelect from './components/LocationSelect';
-import { DateTime, Duration } from 'luxon';
+import Button from './components/Button';
+import Icon from './components/Icon';
 
 const Content = styled.div`
   display: flex;
@@ -22,9 +23,28 @@ const Wrapper = styled.div`
   overflow: hidden;
 `
 
+const Controls = styled.div`
+  display: flex;
+  flex-direction: row;
+  padding: 0.6rem 1.2rem 0 1.2rem;
+`
+
 const TripSelect = styled.div`
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
+`
+
+const SwapButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 0.6rem;
+`
+
+const ButtonRow = styled.div`
+  display: flex;
+  flex-direction: row;
   padding: 0.6rem 1.2rem 0 1.2rem;
 `
 
@@ -38,19 +58,6 @@ const Label = styled.span`
   margin: 0.6rem 1.2rem 0 1.2rem;
   border-bottom: solid 1px #019cd5;
   padding-bottom: 0.6rem;
-`
-
-const SaveTripButton = styled.button`
-  background-color: hsl(0,0%,100%);
-  border-color: hsl(0,0%,80%);
-  border-radius: 4px;
-  border-style: solid;
-  border-width: 1px;
-  position: relative;
-  box-sizing: border-box;
-  font-size: 1rem;
-  padding: 12px;
-  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 `
 
 const App = () => {
@@ -78,7 +85,12 @@ const App = () => {
       setShowTrips(true);
       fetchData();
     }
-  }, [from, to])
+  }, [from, to]);
+
+  const swapSelectedLocations = (): void => {
+    setFrom(to);
+    setTo(from);
+  }
 
   /*
   useEffect(() => {
@@ -114,20 +126,30 @@ const App = () => {
       <Header />
       <Wrapper>
         <Label>New Trip</Label>
-        <TripSelect>
-          <PaddedLocationSelect
-            label="From..."
-            value={from}
-            onChange={setFrom} />
-          <PaddedLocationSelect
-            label="To..."
-            value={to}
-            onChange={setTo} />
-        </TripSelect>
+        <Controls>
+          <TripSelect>
+            <PaddedLocationSelect
+              label="From..."
+              value={from}
+              onChange={setFrom} />
+            <PaddedLocationSelect
+              label="To..."
+              value={to}
+              onChange={setTo} />
+          </TripSelect>
+          <SwapButtonWrapper>
+            <Button
+              disabled={from == undefined && to == undefined}
+              onClick={() => swapSelectedLocations()}
+            >
+              <Icon>↕</Icon>
+            </Button>
+          </SwapButtonWrapper>
+        </Controls>
         {showTrips ?
           <>
-            <Label>Trips</Label>
-            <button onClick={() => setShowTrips(false)}>Close</button>
+            <Label>Trip Results</Label>
+            <Button onClick={() => setShowTrips(false)}>Close</Button>
             <Trips
               loading={loading}
               trips={trips} />
