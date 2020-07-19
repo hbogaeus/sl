@@ -2,11 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { Trip } from '../../domain';
 import { Duration, DateTime, Interval } from 'luxon';
+import LineWithDuration from './LineWithDuration';
 
 const Content = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-bottom: 0.5rem;
 `
 
 const TripInfo = styled.div`
@@ -15,20 +17,11 @@ const TripInfo = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-`
-
-const Time = styled.span`
-`
-
-const Arrow = styled.div`
+  font-variant-numeric: tabular-nums;
 `
 
 const Spacer = styled.div`
   flex-grow: 1;
-`
-
-const TripDuration = styled.div`
-
 `
 
 const formatDuration = (duration: Duration): string => {
@@ -59,10 +52,11 @@ const Trip = ({ trip, now }: TripProps) => {
   return (
     <Content>
       <TripInfo>
-        <Time>{formatTime(trip.startTime)}</Time>
-        <Time>{formatTime(trip.endTime)}</Time>
-        <TripDuration>{duration}</TripDuration>
-        <TripDuration>{leavesIn}</TripDuration>
+        <span>{formatTime(trip.startTime)}</span>
+        <LineWithDuration duration={duration} />
+        <span>{formatTime(trip.endTime)}</span>
+        <Spacer />
+        <span>{leavesIn}</span>
       </TripInfo>
     </Content>)
 }

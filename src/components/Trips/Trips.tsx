@@ -45,12 +45,6 @@ const Trips = ({ trips, loading }: TripsProps) => {
 
   return (
     <Content>
-      <Labels>
-        <span>Leaves</span>
-        <span>Arrives</span>
-        <span>Duration</span>
-        <span>Leaves in</span>
-      </Labels>
       {trips.map(trip =>
         <TripComponent
           key={`${trip.duration}${trip.startTime}${trip.endTime}`}
