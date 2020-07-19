@@ -3,6 +3,10 @@ import * as webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
+import createStyledComponentsTransformer from 'typescript-plugin-styled-components';
+
+// This is to get React component names in generated CSS classes
+const styledComponentsTransformer = createStyledComponentsTransformer();
 
 const config: webpack.Configuration = {
   entry: './src/index.tsx',
@@ -10,8 +14,12 @@ const config: webpack.Configuration = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
+        loader: 'ts-loader',
         exclude: /node_module/,
+        options: {
+          getCustomTransformers: () => ({ before: [styledComponentsTransformer] })
+
+        }
       },
       {
         test: /\.css$/,
