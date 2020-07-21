@@ -10,6 +10,7 @@ const Content = styled.div`
   flex-direction: column;
   height: 100%;
   padding: 0.6rem 1.2rem;
+  overflow-y: auto;
 `
 
 const SpinnerContainer = styled(Content)`
