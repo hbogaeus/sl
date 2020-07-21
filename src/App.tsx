@@ -62,6 +62,7 @@ const Divider = styled.div`
   align-items: center;
   border-bottom: solid 1px #019cd5;
   padding-bottom: 0.6rem;
+  min-height: 2rem;
   margin: 0.6rem 1.2rem 0 1.2rem;
 `
 
@@ -162,7 +163,7 @@ const App = () => {
           <>
             <Divider>
               <Label>Trip Results</Label>
-              <OutlinedButton>
+              <OutlinedButton style={{ marginLeft: '0.2rem' }}>
                 <StarIcon filled={true} />
               </OutlinedButton>
               <Spacer />
