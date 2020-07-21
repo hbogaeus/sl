@@ -59,7 +59,7 @@ const PaddedLocationSelect = styled(LocationSelect)`
 const Divider = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: flex-end;
+  align-items: center;
   border-bottom: solid 1px #019cd5;
   padding-bottom: 0.6rem;
   margin: 0.6rem 1.2rem 0 1.2rem;
