@@ -46,18 +46,20 @@ export const getLocations = async (input: string): Promise<Location[]> => {
   })
 }
 
+interface TripPlanResponseLocation {
+  name: string,
+  time: string
+  date: string,
+  rtDate: string, // rtXXXX versions are the actual times, after delays and such
+  rtTime: string
+}
+
 interface TripPlanResponse {
   Trip: {
     LegList: {
       Leg: {
-        Origin: {
-          name: string,
-          time: string
-        },
-        Destination: {
-          name: string,
-          time: string
-        },
+        Origin: TripPlanResponseLocation,
+        Destination: TripPlanResponseLocation,
         JourneyDetailRef: {
           ref: string
         },
@@ -67,10 +69,16 @@ interface TripPlanResponse {
   }[]
 }
 
+const createDateTime = (location: TripPlanResponseLocation): DateTime => {
+  const formattedString = `${location.rtDate}T${location.rtTime}`;
+  return DateTime.fromISO(formattedString);
+}
+
+
 const mapResponseToDomain = (response: TripPlanResponse): Trip[] => {
   return response.Trip.map(trip => {
-    const startTime = DateTime.fromISO(trip.LegList.Leg[0].Origin.time);
-    const endTime = DateTime.fromISO(trip.LegList.Leg[trip.LegList.Leg.length - 1].Destination.time);
+    const startTime = createDateTime(trip.LegList.Leg[0].Origin);
+    const endTime = createDateTime(trip.LegList.Leg[trip.LegList.Leg.length - 1].Destination);
     return {
       startTime: startTime,
       endTime: endTime,
