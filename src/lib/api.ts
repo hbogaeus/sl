@@ -50,8 +50,8 @@ interface TripPlanResponseLocation {
   name: string,
   time: string
   date: string,
-  rtDate: string, // rtXXXX versions are the actual times, after delays and such
-  rtTime: string
+  rtDate?: string,  // rtXXXX versions are the actual times, after delays and such
+  rtTime?: string   // they are only present if there are delays
 }
 
 interface TripPlanResponse {
@@ -69,8 +69,17 @@ interface TripPlanResponse {
   }[]
 }
 
-const createDateTime = (location: TripPlanResponseLocation): DateTime => {
-  const formattedString = `${location.rtDate}T${location.rtTime}`;
+const createDateTime = ({ date, time, rtDate, rtTime }: TripPlanResponseLocation): DateTime => {
+  let formattedString;
+
+  const tripIsDelayed = rtDate && rtTime;
+
+  if (tripIsDelayed) {
+    formattedString = `${rtDate}T${rtTime}`;
+  } else {
+    formattedString = `${date}T${time}`;
+  }
+
   return DateTime.fromISO(formattedString);
 }
 
