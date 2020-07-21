@@ -91,7 +91,8 @@ const mapResponseToDomain = (response: TripPlanResponse): Trip[] => {
     return {
       startTime: startTime,
       endTime: endTime,
-      duration: Duration.fromISO(trip.duration)
+      duration: endTime.diff(startTime)
+      // duration: Duration.fromISO(trip.duration)
     }
   });
 }
