@@ -1,5 +1,6 @@
 import { Trip, Location, LocationKind } from "../domain";
 import { DateTime, Duration } from "luxon";
+import { textSpanIntersectsWithPosition } from "typescript";
 
 const baseUrl = '/api';
 
@@ -69,7 +70,7 @@ interface TripPlanResponse {
 const mapResponseToDomain = (response: TripPlanResponse): Trip[] => {
   return response.Trip.map(trip => {
     const startTime = DateTime.fromISO(trip.LegList.Leg[0].Origin.time);
-    const endTime = DateTime.fromISO(trip.LegList.Leg[0].Destination.time);
+    const endTime = DateTime.fromISO(trip.LegList.Leg[trip.LegList.Leg.length - 1].Destination.time);
     return {
       startTime: startTime,
       endTime: endTime,
