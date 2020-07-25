@@ -76,6 +76,8 @@ const createDateTime = ({ date, time, rtDate, rtTime }: ResponseLocation): DateT
 
 const mapLegKind = (category: number): LegKind => {
   switch (category) {
+    case 0:
+      return LegKind.TRAIN
     case 1:
       return LegKind.METRO
     case 2:

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import TripComponent from './Trip';
+import TripComponent from './Trip/Trip';
 import { Trip } from '../../domain';
 import { DateTime } from 'luxon';
 import Spinner from '../Spinner';

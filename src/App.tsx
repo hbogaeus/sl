@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Header from './components/Header';
-import { Trip, Location } from './domain';
+import { Trip, Location, LegKind } from './domain';
 import { getTripPlan } from './lib/api/api';
 import Trips from './components/Trips/Trips';
 import SavedTrips from './components/SavedTrips/SavedTrips';
@@ -44,12 +44,6 @@ const SwapButtonWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   margin-left: 0.6rem;
-`
-
-const ButtonRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  padding: 0.6rem 1.2rem 0 1.2rem;
 `
 
 const PaddedLocationSelect = styled(LocationSelect)`
@@ -110,21 +104,93 @@ const App = () => {
         startTime: DateTime.fromISO("08:47:00"),
         endTime: DateTime.fromISO("10:10:00"),
         duration: Duration.fromISO("PT23M"),
+        legs: [
+          {
+            kind: LegKind.WALK,
+            distance: 1500
+          },
+          {
+            kind: LegKind.BUS,
+            line: 165,
+            direction: "Farsta centrum",
+            name: "Buss 165",
+          },
+          {
+            kind: LegKind.METRO,
+            line: 18,
+            direction: "Åkeshov",
+            name: "tunnelbanans gröna linje 18",
+          }
+        ]
       },
       {
         startTime: DateTime.fromISO("17:49:00"),
         endTime: DateTime.fromISO("18:18:00"),
         duration: Duration.fromISO("PT24M"),
+        legs: [
+          {
+            kind: LegKind.WALK,
+            distance: 1500
+          },
+          {
+            kind: LegKind.BUS,
+            line: 165,
+            direction: "Farsta centrum",
+            name: "Buss 165",
+          },
+          {
+            kind: LegKind.METRO,
+            line: 18,
+            direction: "Åkeshov",
+            name: "tunnelbanans gröna linje 18",
+          }
+        ]
       },
       {
-        startTime: DateTime.fromISO("17:54:00"),
+        startTime: DateTime.fromISO("23:08:00"),
         endTime: DateTime.fromISO("18:18:00"),
         duration: Duration.fromISO("PT24M"),
+        legs: [
+          {
+            kind: LegKind.WALK,
+            distance: 1500
+          },
+          {
+            kind: LegKind.BUS,
+            line: 165,
+            direction: "Farsta centrum",
+            name: "Buss 165",
+          },
+          {
+            kind: LegKind.METRO,
+            line: 18,
+            direction: "Åkeshov",
+            name: "tunnelbanans gröna linje 18",
+          }
+        ]
       },
       {
         startTime: DateTime.fromISO("23:10:00"),
         endTime: DateTime.fromISO("18:18:00"),
         duration: Duration.fromISO("PT24M"),
+        legs: [
+          {
+            kind: LegKind.WALK,
+            distance: 1500
+          },
+          {
+            kind: LegKind.BUS,
+            line: 165,
+            direction: "Farsta centrum",
+            name: "Buss 165",
+          },
+          {
+            kind: LegKind.METRO,
+            line: 18,
+            direction: "Åkeshov",
+            name: "tunnelbanans gröna linje 18",
+          }
+        ]
       }
     ];
     setTrips(testTrips);
@@ -164,7 +230,10 @@ const App = () => {
             <Divider>
               <Label>Trip Results</Label>
               <OutlinedButton onClick={() => toggledSaved(from, to)} style={{ marginLeft: '0.2rem' }}>
-                <StarIcon filled={isSaved(from, to)} />
+                <StarIcon
+                  // filled={isSaved(from, to)}
+                  filled={true}
+                />
               </OutlinedButton>
               <Spacer />
               <OutlinedButton onClick={() => setShowTrips(false)}>

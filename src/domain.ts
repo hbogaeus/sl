@@ -35,7 +35,8 @@ export enum LegKind {
   METRO = "Metro",
   TRAM = "Tram",
   BUS = "Bus",
-  SHIP = "Ship"
+  SHIP = "Ship",
+  TRAIN = "Train"
 }
 
 export interface WalkLeg {
@@ -45,7 +46,7 @@ export interface WalkLeg {
 
 // TODO: Find a better name for this
 export interface OtherLeg {
-  kind: LegKind.METRO | LegKind.TRAM | LegKind.BUS | LegKind.SHIP,
+  kind: LegKind.METRO | LegKind.TRAM | LegKind.BUS | LegKind.SHIP | LegKind.TRAIN,
   line: number,
   name: string,
   direction: string
