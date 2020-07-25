@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Header from './components/Header';
 import { Trip, Location } from './domain';
-import { getTripPlan } from './lib/api';
+import { getTripPlan } from './lib/api/api';
 import Trips from './components/Trips/Trips';
 import SavedTrips from './components/SavedTrips/SavedTrips';
 import { useSavedTrips } from './lib/useSavedTrips';

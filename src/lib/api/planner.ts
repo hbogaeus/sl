@@ -1,6 +1,6 @@
-import { Trip, Location, LocationKind } from "../domain";
-import { DateTime, Duration } from "luxon";
-import { textSpanIntersectsWithPosition } from "typescript";
+import { Trip, Location, LocationKind } from "../../domain";
+import { DateTime } from "luxon";
+import map from 'lodash/map';
 
 const baseUrl = '/api';
 
@@ -10,43 +10,7 @@ const http = async <T>(request: RequestInfo): Promise<T> => {
   return body;
 }
 
-interface LocationsResponse {
-  ResponseData: {
-    Name: string,
-    Type: LocationKind,
-    SiteId: string,
-    X: string,
-    Y: string
-  }[]
-}
-
-const formatCoordinates = (x: string, y: string): { long: string, lat: string } => ({
-  long: x.substring(0, 2) + "." + x.substring(2),
-  lat: y.substring(0, 2) + "." + y.substring(2),
-})
-
-export const getLocations = async (input: string): Promise<Location[]> => {
-  const url = `${baseUrl}/typeahead.json?searchstring=${encodeURIComponent(input)}&stationsonly=false&maxresults=5`
-  const response = await http<LocationsResponse>(url);
-
-  return response.ResponseData.map(location => {
-    if (location.Type == LocationKind.Station) {
-      return {
-        kind: LocationKind.Station,
-        name: location.Name,
-        id: location.SiteId
-      }
-    } else if (location.Type == LocationKind.Address) {
-      return {
-        kind: LocationKind.Address,
-        name: location.Name,
-        coords: formatCoordinates(location.X, location.Y)
-      }
-    }
-  })
-}
-
-interface TripPlanResponseLocation {
+interface ResponseLocation {
   name: string,
   time: string
   date: string,
@@ -54,22 +18,48 @@ interface TripPlanResponseLocation {
   rtTime?: string   // they are only present if there are delays
 }
 
-interface TripPlanResponse {
+type ResponseLegType = "WALK" | "JNY";
+
+type ResponseLeg = WalkLeg | JnyLeg;
+
+interface CommonLeg {
+  Origin: ResponseLocation,
+  Destination: ResponseLocation,
+  JourneyDetailRef: {
+    ref: string
+  },
+  type: ResponseLegType
+}
+
+interface WalkLeg extends CommonLeg {
+  type: "WALK",
+  dist: number  // in meters
+  hide: boolean // true if walk is too short?
+}
+
+interface JnyLeg extends CommonLeg {
+  type: "JNY",
+  Product?: {
+    name: string,
+    line: string,
+    number: number,   // used as key in other API?
+    catOut: string,
+    catOutS: string,  // catOutS = Category Output Short?
+    catIn: string,    // catIn always same as catOutS?
+    catCode: number
+  },
+}
+
+interface Response {
   Trip: {
     LegList: {
-      Leg: {
-        Origin: TripPlanResponseLocation,
-        Destination: TripPlanResponseLocation,
-        JourneyDetailRef: {
-          ref: string
-        },
-      }[]
+      Leg: ResponseLeg[]
     },
     duration: string // in ISO-8601 format
   }[]
 }
 
-const createDateTime = ({ date, time, rtDate, rtTime }: TripPlanResponseLocation): DateTime => {
+const createDateTime = ({ date, time, rtDate, rtTime }: ResponseLocation): DateTime => {
   let formattedString;
 
   const tripIsDelayed = rtDate && rtTime;
@@ -84,10 +74,15 @@ const createDateTime = ({ date, time, rtDate, rtTime }: TripPlanResponseLocation
 }
 
 
-const mapResponseToDomain = (response: TripPlanResponse): Trip[] => {
+const mapResponseToDomain = (response: Response): Trip[] => {
   return response.Trip.map(trip => {
     const startTime = createDateTime(trip.LegList.Leg[0].Origin);
     const endTime = createDateTime(trip.LegList.Leg[trip.LegList.Leg.length - 1].Destination);
+
+    const legs = map(trip.LegList.Leg, ({ type, ...rest }) => {
+      return { type, other: rest };
+    });
+
     return {
       startTime: startTime,
       endTime: endTime,
@@ -117,7 +112,7 @@ export const getTripPlan = async (origin: Location, destination: Location): Prom
   appendParameters(destination, params, 'dest');
 
   const url = `${apiUrl}?${params.toString()}`
-  const response = await http<TripPlanResponse>(url);
+  const response = await http<Response>(url);
 
   return mapResponseToDomain(response);
 }
