@@ -7,7 +7,7 @@ The official SL (Stockholms Lokaltrafik) Android app is not great so decided to 
 
 #### Features
 - [x] Show countdown for each suggested trip until they leave
-- [ ] Star trips
+- [x] Save trips
 - [ ] Show legs of the trip
 - [ ] Detailed view of a trip
 - [ ] Select time

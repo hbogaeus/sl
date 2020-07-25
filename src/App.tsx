@@ -77,7 +77,7 @@ const App = () => {
   const [trips, setTrips] = useState<Trip[]>();
   const [loading, setLoading] = useState<boolean>(false);
   const [showTrips, setShowTrips] = useState<boolean>(false);
-  const [savedTrips, saveTrip] = useSavedTrips();
+  const [savedTrips, toggledSaved, isSaved] = useSavedTrips();
 
   const setTrip = (from: Location, to: Location): void => {
     setFrom(from);
@@ -163,8 +163,8 @@ const App = () => {
           <>
             <Divider>
               <Label>Trip Results</Label>
-              <OutlinedButton style={{ marginLeft: '0.2rem' }}>
-                <StarIcon filled={true} />
+              <OutlinedButton onClick={() => toggledSaved(from, to)} style={{ marginLeft: '0.2rem' }}>
+                <StarIcon filled={isSaved(from, to)} />
               </OutlinedButton>
               <Spacer />
               <OutlinedButton onClick={() => setShowTrips(false)}>
