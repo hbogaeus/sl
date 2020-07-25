@@ -1,4 +1,4 @@
-import { Trip, Location, LocationKind } from "../../domain";
+import { Trip, Location, LocationKind, Leg, LegKind } from "../../domain";
 import { DateTime } from "luxon";
 import map from 'lodash/map';
 
@@ -39,14 +39,15 @@ interface WalkLeg extends CommonLeg {
 
 interface JnyLeg extends CommonLeg {
   type: "JNY",
+  direction: string,
   Product?: {
     name: string,
-    line: string,
+    line: number,
     number: number,   // used as key in other API?
     catOut: string,
     catOutS: string,  // catOutS = Category Output Short?
     catIn: string,    // catIn always same as catOutS?
-    catCode: number
+    catCode: string
   },
 }
 
@@ -73,20 +74,70 @@ const createDateTime = ({ date, time, rtDate, rtTime }: ResponseLocation): DateT
   return DateTime.fromISO(formattedString);
 }
 
+const mapLegKind = (category: number): LegKind => {
+  switch (category) {
+    case 1:
+      return LegKind.METRO
+    case 2:
+      return LegKind.TRAM
+    case 3:
+      return LegKind.BUS
+    case 6:
+      return LegKind.SHIP
+    default:
+      return LegKind.UNKNOWN
+  }
+}
+
+const mapLeg = (leg: ResponseLeg): Leg => {
+  if (leg.type == "WALK") {
+    if (leg.hide) {
+      return null;
+    }
+
+    return {
+      kind: LegKind.WALK,
+      distance: leg.dist
+    }
+  } else {
+    const { direction, Product: { line, name, catCode } } = leg;
+
+    const kind = mapLegKind(parseInt(catCode));
+
+    if (kind == LegKind.UNKNOWN) {
+      console.warn("Unknown leg", leg);
+      return {
+        kind: LegKind.UNKNOWN
+      }
+    } else if (kind == LegKind.WALK) {
+      // Never happens but here to make Typescript happy
+    } else {
+      return {
+        kind,
+        line,
+        name,
+        direction
+      }
+    }
+  }
+}
 
 const mapResponseToDomain = (response: Response): Trip[] => {
   return response.Trip.map(trip => {
     const startTime = createDateTime(trip.LegList.Leg[0].Origin);
     const endTime = createDateTime(trip.LegList.Leg[trip.LegList.Leg.length - 1].Destination);
 
-    const legs = map(trip.LegList.Leg, ({ type, ...rest }) => {
-      return { type, other: rest };
-    });
+    const legs = trip.LegList.Leg
+      .map(mapLeg)
+      .filter(x => x);
+
+    console.log(legs);
 
     return {
       startTime: startTime,
       endTime: endTime,
-      duration: endTime.diff(startTime)
+      duration: endTime.diff(startTime),
+      legs: legs
       // duration: Duration.fromISO(trip.duration)
     }
   });

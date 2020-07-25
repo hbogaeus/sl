@@ -27,12 +27,14 @@ export interface SavedTrip {
   to: Location
 }
 
-export type Leg = WalkLeg | OtherLeg;
+export type Leg = WalkLeg | OtherLeg | UnknownLeg;
 
 export enum LegKind {
+  UNKNOWN = "Unknown",
   WALK = "Walk",
-  BUS = "Bus",
   METRO = "Metro",
+  TRAM = "Tram",
+  BUS = "Bus",
   SHIP = "Ship"
 }
 
@@ -41,15 +43,22 @@ export interface WalkLeg {
   distance: number
 }
 
+// TODO: Find a better name for this
 export interface OtherLeg {
-  kind: LegKind.METRO | LegKind.BUS | LegKind.SHIP,
+  kind: LegKind.METRO | LegKind.TRAM | LegKind.BUS | LegKind.SHIP,
   line: number,
-  name: string
+  name: string,
+  direction: string
+}
+
+export interface UnknownLeg {
+  kind: LegKind.UNKNOWN
 }
 
 // TODO: Find a better name for this
 export interface Trip {
   startTime: DateTime,
   endTime: DateTime,
-  duration: Duration
+  duration: Duration,
+  legs: Leg[]
 }
