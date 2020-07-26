@@ -24,9 +24,6 @@ type ResponseLeg = WalkLeg | JnyLeg;
 interface CommonLeg {
   Origin: ResponseLocation,
   Destination: ResponseLocation,
-  JourneyDetailRef: {
-    ref: string
-  },
   type: ResponseLegType
 }
 
@@ -39,6 +36,9 @@ interface WalkLeg extends CommonLeg {
 interface JnyLeg extends CommonLeg {
   type: "JNY",
   direction: string,
+  JourneyDetailRef: {
+    ref: string
+  },
   Product: {
     name: string,
     line: string,
