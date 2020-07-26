@@ -1,6 +1,5 @@
 import { Trip, Location, LocationKind, Leg, LegKind } from "../../domain";
 import { DateTime } from "luxon";
-import map from 'lodash/map';
 
 const baseUrl = '/api';
 
@@ -40,9 +39,9 @@ interface WalkLeg extends CommonLeg {
 interface JnyLeg extends CommonLeg {
   type: "JNY",
   direction: string,
-  Product?: {
+  Product: {
     name: string,
-    line: number,
+    line: string,
     number: number,   // used as key in other API?
     catOut: string,
     catOutS: string,  // catOutS = Category Output Short?
@@ -74,7 +73,7 @@ const createDateTime = ({ date, time, rtDate, rtTime }: ResponseLocation): DateT
   return DateTime.fromISO(formattedString);
 }
 
-const mapLegKind = (category: number): LegKind => {
+const mapLegKind = (category: number) => {
   switch (category) {
     case 0:
       return LegKind.TRAIN
@@ -93,10 +92,6 @@ const mapLegKind = (category: number): LegKind => {
 
 const mapLeg = (leg: ResponseLeg): Leg => {
   if (leg.type == "WALK") {
-    if (leg.hide) {
-      return null;
-    }
-
     return {
       kind: LegKind.WALK,
       distance: leg.dist
@@ -111,12 +106,10 @@ const mapLeg = (leg: ResponseLeg): Leg => {
       return {
         kind: LegKind.UNKNOWN
       }
-    } else if (kind == LegKind.WALK) {
-      // Never happens but here to make Typescript happy
     } else {
       return {
         kind,
-        line,
+        line: parseInt(line),
         name,
         direction
       }
@@ -130,10 +123,10 @@ const mapResponseToDomain = (response: Response): Trip[] => {
     const endTime = createDateTime(trip.LegList.Leg[trip.LegList.Leg.length - 1].Destination);
 
     const legs = trip.LegList.Leg
-      .map(mapLeg)
-      .filter(x => x);
+      .filter(leg => leg.type === "WALK" ? !leg.hide : true)
+      .map(mapLeg);
 
-    console.log(legs);
+    // console.log(legs);
 
     return {
       startTime: startTime,

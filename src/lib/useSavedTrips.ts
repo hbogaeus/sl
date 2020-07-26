@@ -29,7 +29,7 @@ export const useSavedTrips = (): [SavedTrip[], typeof toggleSaved, typeof isSave
 
   const isSaved = (from: Location, to: Location): boolean => {
     const hashCode = hash(from, to);
-    return persistedTrips.hasOwnProperty(hashCode);
+    return (persistedTrips as PersistedSavedTrips).hasOwnProperty(hashCode);
   }
 
   const saveTrip = (from: Location, to: Location): void => {
@@ -39,9 +39,9 @@ export const useSavedTrips = (): [SavedTrip[], typeof toggleSaved, typeof isSave
   }
 
   const unsaveTrip = (from: Location, to: Location): void => {
-    const hashCode = hash(from, to);;
+    const hashCode = hash(from, to);
 
-    const { [hashCode]: value, ...updated } = persistedTrips;
+    const { [hashCode]: value, ...updated } = persistedTrips as PersistedSavedTrips;
 
     setValue(updated);
   }

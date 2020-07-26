@@ -8,14 +8,24 @@ const http = async <T>(request: RequestInfo): Promise<T> => {
   return body;
 }
 
+
+type ResponseLocation = ResponseAddress | ResponseStation;
+
+interface ResponseAddress {
+  Type: LocationKind.Address,
+  Name: string,
+  X: string,
+  Y: string
+}
+
+interface ResponseStation {
+  Type: LocationKind.Station,
+  Name: string,
+  SiteId: string,
+}
+
 interface Response {
-  ResponseData: {
-    Name: string,
-    Type: LocationKind,
-    SiteId: string,
-    X: string,
-    Y: string
-  }[]
+  ResponseData: ResponseLocation[]
 }
 
 const formatCoordinates = (x: string, y: string): { long: string, lat: string } => ({
@@ -28,18 +38,20 @@ export const getLocations = async (input: string): Promise<Location[]> => {
   const response = await http<Response>(url);
 
   return response.ResponseData.map(location => {
-    if (location.Type == LocationKind.Station) {
-      return {
-        kind: LocationKind.Station,
-        name: location.Name,
-        id: location.SiteId
-      }
-    } else if (location.Type == LocationKind.Address) {
-      return {
-        kind: LocationKind.Address,
-        name: location.Name,
-        coords: formatCoordinates(location.X, location.Y)
-      }
+
+    switch (location.Type) {
+      case LocationKind.Station:
+        return {
+          kind: LocationKind.Station,
+          name: location.Name,
+          id: '123'
+        }
+      case LocationKind.Address:
+        return {
+          kind: LocationKind.Address,
+          name: location.Name,
+          coords: formatCoordinates(location.X, location.Y)
+        }
     }
   })
 }

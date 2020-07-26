@@ -10,7 +10,7 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.8rem;
   opacity: ${(p: { hasPassed: boolean }) => p.hasPassed ? 0.5 : 1.0};
   border: solid 1px rgb(227,227,227);
   box-shadow: 0 1px 2px rgba(0,0,0,.025);
@@ -58,8 +58,6 @@ const Trip = ({ now, trip: { startTime, endTime, duration, legs } }: TripProps) 
         <span>{startTime.toLocaleString(DateTime.TIME_24_SIMPLE)}</span>
         <LineWithDuration duration={duration.toFormat('hh:mm')} />
         <span>{endTime.toLocaleString(DateTime.TIME_24_SIMPLE)}</span>
-        <Spacer />
-        <span>{leavesIn}</span>
       </TripInfo>
       <Legs>
         {legs.map((leg, index) => <Leg key={index} leg={leg} />)}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Header from './components/Header';
-import { Trip, Location, LegKind } from './domain';
+import { Trip, Location, LegKind, LocationKind } from './domain';
 import { getTripPlan } from './lib/api/api';
 import Trips from './components/Trips/Trips';
 import SavedTrips from './components/SavedTrips/SavedTrips';
@@ -68,7 +68,7 @@ const Label = styled.span`
 const App = () => {
   const [from, setFrom] = useState<Location>();
   const [to, setTo] = useState<Location>();
-  const [trips, setTrips] = useState<Trip[]>();
+  const [trips, setTrips] = useState<Trip[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [showTrips, setShowTrips] = useState<boolean>(false);
   const [savedTrips, toggledSaved, isSaved] = useSavedTrips();
@@ -81,7 +81,7 @@ const App = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const fetchedTrips = await getTripPlan(from, to);
+      const fetchedTrips = await getTripPlan(from as Location, to as Location);
       setTrips(fetchedTrips);
       setLoading(false);
     }
@@ -162,6 +162,12 @@ const App = () => {
             name: "Buss 165",
           },
           {
+            kind: LegKind.TRAM,
+            line: 22,
+            direction: "Åkeshov",
+            name: "tunnelbanans gröna linje 18",
+          },
+          {
             kind: LegKind.METRO,
             line: 18,
             direction: "Åkeshov",
@@ -175,16 +181,6 @@ const App = () => {
         duration: Duration.fromISO("PT24M"),
         legs: [
           {
-            kind: LegKind.WALK,
-            distance: 1500
-          },
-          {
-            kind: LegKind.BUS,
-            line: 165,
-            direction: "Farsta centrum",
-            name: "Buss 165",
-          },
-          {
             kind: LegKind.METRO,
             line: 18,
             direction: "Åkeshov",
@@ -193,6 +189,8 @@ const App = () => {
         ]
       }
     ];
+    setTo({ name: 'Gubbängen', id: '123', kind: LocationKind.Station })
+    setFrom({ name: 'Odenplan', id: '456', kind: LocationKind.Station })
     setTrips(testTrips);
     setShowTrips(true);
   }, []);
@@ -225,14 +223,13 @@ const App = () => {
             </FilledButton>
           </SwapButtonWrapper>
         </Controls>
-        {showTrips ?
+        {showTrips && from && to ?
           <>
             <Divider>
               <Label>Trip Results</Label>
               <OutlinedButton onClick={() => toggledSaved(from, to)} style={{ marginLeft: '0.2rem' }}>
                 <StarIcon
-                  // filled={isSaved(from, to)}
-                  filled={true}
+                  filled={isSaved(from, to)}
                 />
               </OutlinedButton>
               <Spacer />

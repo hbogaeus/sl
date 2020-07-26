@@ -1,11 +1,10 @@
-import { displayPartsToString } from "typescript";
 import React from 'react';
 import styled from 'styled-components';
 
 const LineWrapper = styled.span`
   display: flex;
   color: #4c555a;
-  width: 8rem;
+  flex-grow: 1;
   flex-direction: row;
   font-size: 0.8rem;
   text-transform: uppercase;
