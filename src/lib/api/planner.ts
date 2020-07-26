@@ -97,7 +97,11 @@ const mapLeg = (leg: ResponseLeg): Leg => {
       distance: leg.dist
     }
   } else {
-    const { direction, Product: { line, name, catCode } } = leg;
+    const {
+      direction,
+      JourneyDetailRef: { ref },
+      Product: { line, name, catCode }
+    } = leg;
 
     const kind = mapLegKind(parseInt(catCode));
 
@@ -111,7 +115,8 @@ const mapLeg = (leg: ResponseLeg): Leg => {
         kind,
         line: parseInt(line),
         name,
-        direction
+        direction,
+        detailsId: ref
       }
     }
   }
