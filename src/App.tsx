@@ -114,12 +114,14 @@ const App = () => {
             line: 165,
             direction: "Farsta centrum",
             name: "Buss 165",
+            detailsId: 'detailsId'
           },
           {
             kind: LegKind.METRO,
             line: 18,
             direction: "Åkeshov",
             name: "tunnelbanans gröna linje 18",
+            detailsId: 'detailsId'
           }
         ]
       },
@@ -137,12 +139,14 @@ const App = () => {
             line: 165,
             direction: "Farsta centrum",
             name: "Buss 165",
+            detailsId: 'detailsId'
           },
           {
             kind: LegKind.METRO,
             line: 18,
             direction: "Åkeshov",
             name: "tunnelbanans gröna linje 18",
+            detailsId: 'detailsId'
           }
         ]
       },
@@ -160,18 +164,21 @@ const App = () => {
             line: 165,
             direction: "Farsta centrum",
             name: "Buss 165",
+            detailsId: 'detailsId'
           },
           {
             kind: LegKind.TRAM,
             line: 22,
             direction: "Åkeshov",
             name: "tunnelbanans gröna linje 18",
+            detailsId: 'detailsId'
           },
           {
             kind: LegKind.METRO,
             line: 18,
             direction: "Åkeshov",
             name: "tunnelbanans gröna linje 18",
+            detailsId: 'detailsId'
           }
         ]
       },
@@ -185,6 +192,7 @@ const App = () => {
             line: 18,
             direction: "Åkeshov",
             name: "tunnelbanans gröna linje 18",
+            detailsId: 'detailsId'
           }
         ]
       }

@@ -24,9 +24,6 @@ type ResponseLeg = WalkLeg | JnyLeg;
 interface CommonLeg {
   Origin: ResponseLocation,
   Destination: ResponseLocation,
-  JourneyDetailRef: {
-    ref: string
-  },
   type: ResponseLegType
 }
 
@@ -39,6 +36,9 @@ interface WalkLeg extends CommonLeg {
 interface JnyLeg extends CommonLeg {
   type: "JNY",
   direction: string,
+  JourneyDetailRef: {
+    ref: string
+  },
   Product: {
     name: string,
     line: string,
@@ -97,7 +97,11 @@ const mapLeg = (leg: ResponseLeg): Leg => {
       distance: leg.dist
     }
   } else {
-    const { direction, Product: { line, name, catCode } } = leg;
+    const {
+      direction,
+      JourneyDetailRef: { ref },
+      Product: { line, name, catCode }
+    } = leg;
 
     const kind = mapLegKind(parseInt(catCode));
 
@@ -111,7 +115,8 @@ const mapLeg = (leg: ResponseLeg): Leg => {
         kind,
         line: parseInt(line),
         name,
-        direction
+        direction,
+        detailsId: ref
       }
     }
   }

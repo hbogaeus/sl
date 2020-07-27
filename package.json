@@ -5,7 +5,8 @@
   "private": "true",
   "scripts": {
     "start": "webpack-dev-server --open --config webpack.dev.ts",
-    "build": "webpack --config webpack.prod.ts"
+    "build": "webpack --config webpack.prod.ts",
+    "storybook": "start-storybook -s ./src/css -p 9000"
   },
   "dependencies": {
     "@types/luxon": "^1.24.2",
@@ -21,6 +22,8 @@
     "swr": "^0.2.3"
   },
   "devDependencies": {
+    "@babel/core": "^7.10.5",
+    "@storybook/react": "^5.3.19",
     "@types/copy-webpack-plugin": "^6.0.0",
     "@types/debounce-promise": "^3.1.2",
     "@types/lodash": "^4.14.157",
@@ -30,6 +33,7 @@
     "@types/styled-components": "^5.1.1",
     "@types/webpack": "^4.41.21",
     "@types/webpack-dev-server": "^3.11.0",
+    "babel-loader": "^8.1.0",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^6.0.3",
     "css-loader": "^3.6.0",
